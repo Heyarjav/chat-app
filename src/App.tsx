@@ -15,7 +15,7 @@ export function App() {
   useEffect(() => {
     // connect to websocket server
     if (ws) return;
-    ws = new WebSocket("ws://localhost:3000/chat");
+    ws = new WebSocket("ws://192.168.1.32/chat");
 
     ws.onopen = () => {
       console.log("connected");
