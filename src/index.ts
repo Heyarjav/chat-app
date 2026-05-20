@@ -6,6 +6,8 @@ type toSend = {
 }
 const clients = new Set<ServerWebSocket<unknown>>();
 const server = serve({
+  hostname: "0.0.0.0",
+  port: 3000,
   routes: {
     // Serve index.html for all unmatched routes.
     "/*": index,
