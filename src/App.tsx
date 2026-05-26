@@ -15,14 +15,13 @@ export function App() {
   useEffect(() => {
     // connect to websocket server
     if (ws) return;
-    ws = new WebSocket("ws://192.168.1.32:3000/chat");
+    ws = new WebSocket("ws://192.168.0.157:3000/chat");
 
     ws.onopen = () => {
       console.log("connected");
     };
 
     ws.onmessage = event => {
-      console.log("received:", event.data);
       const parsed = JSON.parse(event.data);
       setMessages(prev => [...prev, parsed]);
     };

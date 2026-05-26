@@ -30,7 +30,6 @@ const server = serve({
 
     message(ws, message) {
       const text = message.toString();
-      console.log("received:", text);
       // send to all connected users
       for (const client of clients) {
 
