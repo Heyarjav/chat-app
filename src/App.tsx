@@ -9,13 +9,29 @@ type toSend = {
   text: string;
   mine: boolean;
 }
+
+
 export function App() {
   const [messages, setMessages] = useState<toSend[]>([]);
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("messages");
+
+    if (stored) {
+      setMessages(JSON.parse(stored));
+    }
+  }, []);
+
+  // Save whenever messages change
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
+
   useEffect(() => {
     // connect to websocket server
     if (ws) return;
-    ws = new WebSocket("ws://192.168.0.157:3000/chat");
+    ws = new WebSocket("wss://tubular-pliable-slapping.ngrok-free.dev");
 
     ws.onopen = () => {
       console.log("connected");
@@ -23,11 +39,14 @@ export function App() {
 
     ws.onmessage = event => {
       const parsed = JSON.parse(event.data);
+      console.log(messages);
+
       setMessages(prev => [...prev, parsed]);
     };
 
     ws.onclose = () => {
       console.log("disconnected");
+
     };
 
     return () => {
@@ -37,9 +56,11 @@ export function App() {
   }, []);
 
   function sendMessage() {
+    console.log(messages);
     ws?.send(input);
     setInput("");
   }
+
   return (
     <div className="app">
       <div className="messages">
