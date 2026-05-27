@@ -31,7 +31,9 @@ export function App() {
   useEffect(() => {
     // connect to websocket server
     if (ws) return;
-    ws = new WebSocket("ws://192.168.0.157:3000/chat");
+    const defaultUrl = `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/chat`;
+    const url = import.meta.env.BUN_PUBLIC_WS_URL ?? defaultUrl;
+    ws = new WebSocket(url);
 
     ws.onopen = () => {
       console.log("connected");
